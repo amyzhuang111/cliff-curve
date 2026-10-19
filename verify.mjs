@@ -78,7 +78,7 @@ ok(['Fraunces', 'Inter', 'IBMPlexMono'].every(f => existsSync(join(here, `fonts/
 ok(/Fraunces,Georgia,"Times New Roman",serif/.test(html), 'system serif fallback kept');
 
 section('D. rendered layout in headless Chrome (real-time, via CDP)');
-const types = { '.html': 'text/html; charset=utf-8', '.woff2': 'font/woff2', '.txt': 'text/plain' };
+const types = { '.html': 'text/html; charset=utf-8', '.woff2': 'font/woff2', '.txt': 'text/plain', '.ttf': 'font/ttf' };
 const srv = createServer((q, r) => { const f = join(here, decodeURIComponent(q.url.split('?')[0]).replace(/^\/+/, '') || 'index.html'); if (!f.startsWith(here) || !existsSync(f)) { r.writeHead(404); return r.end(); } r.writeHead(200, { 'content-type': types[extname(f)] || 'application/octet-stream' }); r.end(readFileSync(f)); });
 await new Promise(r => srv.listen(0, '127.0.0.1', r));
 const base = `http://127.0.0.1:${srv.address().port}`;

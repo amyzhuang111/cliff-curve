@@ -16,6 +16,9 @@ Checkpoints (recomputed, not retyped): C(110)=0.0503, C(70)=0.1295, C(43)=0.6262
 Claim on page: “Storing only the cliff date throws away the window's shape.” The curve is the tool's stated scoring model, not measured reply data.
 
 ## How to run
-Open `index.html` in a browser, or `python3 -m http.server` in this folder. Run `node verify.mjs` to recompute checkpoints.
+Open `index.html` in a browser, or `python3 -m http.server` in this folder. Run `node verify.mjs` — 38 checks: extracts the page's own C/S functions and compares to an independent reference (checkpoints, zero outside [−40,110], peak at d=21, S grid), confirms every printed formula/symbol, and that fonts are self-hosted.
+
+## Fonts
+Self-hosted in `fonts/` (latin subsets, woff2, from Google Fonts): Fraunces, Inter, IBM Plex Mono — all SIL Open Font License 1.1 (licence texts shipped as `fonts/OFL-*.txt`). No third-party font CDN; Georgia / Times New Roman / serif fallback kept.
 
 Exports (3200×1800 and 2160×2700, @2x) live in the author's asset folder; the page uses `?m=land` for the 1600×900 frame.

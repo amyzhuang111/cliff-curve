@@ -68,7 +68,9 @@ else {
   ok(statusMismatch === 0, `page threshold bands agree with real status on all cases on rounded S, as the code does (${statusMismatch} mismatches; reach additionally needs open window)`);
 }
 
-section('C. fonts + glyph coverage');
+section('C. fonts + glyph coverage + no-JS fallback');
+const ns = html.match(/<noscript>[\s\S]*?<img src="([^"]+)"[^>]*alt="([^"]+)"/);
+ok(!!ns && existsSync(join(here, ns[1])) && ns[2].length > 60, `<noscript> static chart ${ns?.[1]} exists with alt text`);
 ok(!/fonts\.(googleapis|gstatic)\.com/.test(html), 'no Google Fonts CDN reference');
 const faces = [...html.matchAll(/@font-face\{font-family:"?([^;"]+)"?;[^}]*url\((fonts\/[^)]+)\)/g)].map(m => ({ fam: m[1], file: m[2] }));
 ok(faces.length === 5 && faces.every(f => existsSync(join(here, f.file))), `${faces.length} @font-face files exist locally`);
@@ -98,6 +100,7 @@ if (layout) {
   for (const [k, v] of Object.entries(layout)) {
     ok(v.claimLines === 2 && v.claimCurveHits.every(h => h === 0), `${k} (${v.width}px): serif claim lines' bboxes (+4px pad) contain 0 curve points [${v.claimCurveHits}]`);
     ok(v.minSvgLabelPx >= 11, `${k}: smallest SVG label ${v.minSvgLabelPx}px >= 11px`);
+    if (!v.small) ok(v.liWrap.length === 0, `${k}: no symbol definition wraps${v.liWrap.length ? ' — WRAPS: ' + v.liWrap.join(' | ') : ''}`);
     if (v.small) ok(v.has42, `${k}: d=42 axis tick present on mobile`);
   }
   ok(layout['resize:to375'].small && layout['resize:to375'].heroViewBox === layout.m375.heroViewBox, `resize 1080→375 re-runs mobile layout (viewBox ${layout['resize:to375'].heroViewBox})`);

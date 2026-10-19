@@ -29,7 +29,8 @@ input[type=range]{accent-color:#b98a86;width:200px;vertical-align:middle}
 .chip{padding:7px 11px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--hair)}
 footer{margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;gap:16px;color:var(--taupe);font-size:12.5px;line-height:1.5}
 @media (max-aspect-ratio:1/1){main{padding:38px 28px}.grid{grid-template-columns:1fr}}
-.symlist{} @media (max-width:520px){main .symlist{columns:1}.defs,.chip,.readout,.controls label,.kicker,footer{font-size:13px}.eq{font-size:13px}}
+.symlist{} @media (max-width:1000px) and (min-aspect-ratio:1/1){main .symlist{columns:1}}
+@media (max-width:520px){main .symlist{columns:1}.defs,.chip,.readout,.controls label,.kicker,footer{font-size:13px}.eq{font-size:13px}}
 @media (max-width:520px){main{padding:26px 18px}h1{font-size:42px}.card{padding:12px 8px}.controls{gap:10px}input[type=range]{width:130px}footer{flex-direction:column}}
 body.land main{max-width:1360px;padding:18px 34px} body.land .defs{font-size:12.5px} body.land .eq{font-size:14px;line-height:1.5} body.land footer{display:none} body.land h1{font-size:52px;margin:8px 0 6px} body.land .sub{font-size:17px;max-width:none} body.land .claim{font-size:20px;margin-top:6px} body.land .card{margin-top:12px;padding:12px 16px 4px} body.land .grid{margin-top:10px} body.land .panel{padding-top:8px} body.land footer{padding-top:8px}
 body.land .grid{grid-template-columns:1.25fr .95fr .7fr;gap:30px;margin-top:14px} body.land .panel{padding-top:10px} body.land .defs{font-size:13px;line-height:1.55} body.land .eq{font-size:14px;line-height:1.6;white-space:nowrap}
@@ -43,6 +44,7 @@ body.land .symlist{columns:2;column-gap:22px} body.land .chips{flex-direction:co
 <div class="claim">Storing only the cliff date throws away the window’s shape.</div>
 
 <section class="card" aria-label="Cliff proximity curve">
+<noscript><style>#hero,#inset,.controls{display:none}</style><img src="cliff-curve-static.png" width="1600" height="588" alt="Static chart (JavaScript off; sliders need JS): cliff proximity C(d) peaks at 1.00 at d=21 days before the cliff, 0.65 at d=0 and d=42, 0.20 at d=−21, zero outside −40 to 110; below it S(d) for P=30, H=20 against thresholds 60 and 38." style="width:100%;height:auto;display:block;border-radius:12px"></noscript>
 <svg id="hero" viewBox="0 0 1400 520" role="img"></svg>
 <div class="controls">
 <label>P · proof <input id="p" type="range" min="0" max="100" value="30"> <span id="pv">30</span></label>
@@ -57,7 +59,7 @@ body.land .symlist{columns:2;column-gap:22px} body.land .chips{flex-direction:co
 <div class="defs note-long" style="margin-top:8px">12-month mark shown (year weight ×1; code: 24 mo ×0.84, 36 mo ×0.72). This is Ping When’s real scoring function — its stated scoring model, not measured reply data.</div>
 <div class="defs note-short" style="margin-top:6px">12-month mark (×1; 24 mo ×0.84, 36 mo ×0.72). The tool’s scoring model, not measured reply data.</div></div>
 <div class="panel"><div class="defs"><strong>Every symbol</strong><ul class="symlist">
-<li>d = days to cliff (negative = after)</li><li>C = cliff proximity [0,1]</li><li>P = proof score (0–100)</li><li>H = org-shift score (0–100)</li><li>S = final score (0–100)</li><li>21 = peak, days before cliff</li><li>22 = σ, spread in days</li><li>0.05 = floor inside window</li></ul></div></div>
+<li>d = days to cliff (&lt;0 = after)</li><li>C = cliff proximity [0,1]</li><li>P = proof score (0–100)</li><li>H = org-shift score (0–100)</li><li>S = final score (0–100)</li><li>21 = peak, days before cliff</li><li>22 = σ, spread in days</li><li>0.05 = floor inside window</li></ul></div></div>
 <div class="panel"><div class="chips"><span class="chip" style="background:var(--sage)">wait · S &lt; 38</span><span class="chip" style="background:var(--blush)">warm · 38 ≤ S &lt; 60</span><span class="chip" style="background:var(--lilac)">reach · S ≥ 60 + window open</span></div>
 <div class="defs note-long" style="margin-top:8px">Thresholds 60 reach / 38 warm (on S rounded to a whole number) are Ping When’s constants; reach also needs the window open.</div><div class="defs note-short" style="margin-top:8px">Thresholds 60 / 38 (on rounded S) from Ping When’s constants; reach also needs the window open.</div></div>
 </div>
@@ -142,6 +144,7 @@ window.__audit=()=>{
   const byFont={}; const tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT); let n;
   while((n=tw.nextNode())){const e=n.parentElement; if(!e||e.closest('script,style,pre'))continue; const fam=(e.getAttribute('font-family')||getComputedStyle(e).fontFamily).split(',')[0].replace(/["']/g,'').trim(); byFont[fam]=(byFont[fam]||'')+n.textContent;}
   for(const k in byFont) byFont[k]=[...new Set(byFont[k])].filter(c=>c.trim()).sort().join('');
-  return {width:innerWidth,small:SMALL,charsByFont:byFont,heroViewBox:document.getElementById('hero').getAttribute('viewBox'),claimLines:hits.length,claimCurveHits:hits,minSvgLabelPx:+Math.min(...sizes).toFixed(2),has42:[...document.querySelectorAll('#hero text')].some(t=>t.textContent==='42')};
+  const liWrap=[...document.querySelectorAll('.symlist li')].filter(li=>li.getBoundingClientRect().height>1.5*parseFloat(getComputedStyle(li).lineHeight)).map(li=>li.textContent);
+  return {width:innerWidth,small:SMALL,liWrap,charsByFont:byFont,heroViewBox:document.getElementById('hero').getAttribute('viewBox'),claimLines:hits.length,claimCurveHits:hits,minSvgLabelPx:+Math.min(...sizes).toFixed(2),has42:[...document.querySelectorAll('#hero text')].some(t=>t.textContent==='42')};
 };
 </script></body></html>

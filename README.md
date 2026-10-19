@@ -16,9 +16,9 @@ Checkpoints (recomputed, not retyped): C(110)=0.0503, C(70)=0.1295, C(43)=0.6262
 Claim on page: “Storing only the cliff date throws away the window's shape.” The curve is the tool's stated scoring model, not measured reply data.
 
 ## How to run
-Open `index.html` in a browser, or `python3 -m http.server` in this folder. Run `node verify.mjs` — 38 checks: extracts the page's own C/S functions and compares to an independent reference (checkpoints, zero outside [−40,110], peak at d=21, S grid), confirms every printed formula/symbol, and that fonts are self-hosted.
+Open `index.html` in a browser, or `python3 -m http.server` in this folder. Run `npm test` (= `node --experimental-websocket verify.mjs`; needs Node 20+, google-chrome, python3 fontTools+brotli, and the Ping When repo at `../ping-when-real` or `PING_WHEN_DIR`). 67 checks: (A) page formula + every printed symbol; (B) bundles Ping When's real `scoring.ts`/`constants.ts` with esbuild and compares page C(d) to `cliffProximity` on 961 points and page S(d,P,H) to `scoreResearchers().scoreExact` on 3,820 synthetic Cliff-week cases, plus threshold bands on rounded S; (C) self-hosted fonts; (D) headless-Chrome layout via `layout-check.html` — serif claim never intersects the curve (landscape/portrait/375/812), labels >= 11px, mobile layout re-runs on resize, and per-font glyph coverage of every rendered character.
 
 ## Fonts
-Self-hosted in `fonts/` (latin subsets, woff2, from Google Fonts): Fraunces, Inter, IBM Plex Mono — all SIL Open Font License 1.1 (licence texts shipped as `fonts/OFL-*.txt`). No third-party font CDN; Georgia / Times New Roman / serif fallback kept.
+Self-hosted in `fonts/` (woff2 subsets cut with pyftsubset from the google/fonts OFL sources: Latin + Latin-1 + Greek + arrows/maths used on the page): Fraunces, Inter, IBM Plex Mono — all SIL Open Font License 1.1 (licence texts shipped as `fonts/OFL-*.txt`). No third-party font CDN; Georgia / Times New Roman / serif fallback kept.
 
 Exports (3200×1800 and 2160×2700, @2x) live in the author's asset folder; the page uses `?m=land` for the 1600×900 frame.

@@ -1,0 +1,14 @@
+<!doctype html><meta charset="utf-8"><title>layout check</title><body>
+<script>
+// Loads index.html in frames at export sizes, plus one frame resized 1080 -> 375 -> 1080 to test relayout.
+const cases=[['land',1600,900,'?m=land'],['port',1080,1350,''],['m375',375,812,''],['m375-landscape',812,375,''],['resize',1080,1350,'']];
+const out={};let left=cases.length;
+const done=()=>{if(--left)return;const p=document.createElement('pre');p.id='RESULT';p.textContent=JSON.stringify(out);document.body.append(p);};
+for(const [n,w,h,q] of cases){const f=document.createElement('iframe');f.width=w;f.height=h;f.src='index.html'+q;document.body.append(f);
+ f.onload=()=>setTimeout(()=>{
+  if(n!=='resize'){out[n]=f.contentWindow.__audit();return done();}
+  out['resize:before']=f.contentWindow.__audit(); f.width=375;
+  setTimeout(()=>{out['resize:to375']=f.contentWindow.__audit(); f.width=1080;
+   setTimeout(()=>{out['resize:back1080']=f.contentWindow.__audit(); done();},1500);},1500);
+ },600);}
+</script>

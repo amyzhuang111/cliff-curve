@@ -1,0 +1,6 @@
+{
+  "name": "cliff-curve",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --experimental-websocket verify.mjs" }
+}

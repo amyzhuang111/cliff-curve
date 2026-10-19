@@ -32,6 +32,7 @@ footer{margin-top:auto;padding-top:16px;display:flex;justify-content:space-betwe
 .symlist{} @media (max-width:1000px) and (min-aspect-ratio:1/1){main .symlist{columns:1}}
 @media (max-width:520px){main .symlist{columns:1}.defs,.chip,.readout,.controls label,.kicker,footer{font-size:13px}.eq{font-size:13px}}
 @media (max-width:520px){main{padding:26px 18px}h1{font-size:42px}.card{padding:12px 8px}.controls{gap:10px}input[type=range]{width:130px}footer{flex-direction:column}}
+@media (max-aspect-ratio:1/1) and (min-width:521px){main{padding:22px 28px 14px}main .symlist{columns:2;margin:6px 0 0}.chips{margin-top:4px}.panel .defs[style*="margin-top:8px"]{margin-top:4px!important}.grid{gap:10px;margin-top:10px}.panel{padding-top:10px}footer{padding-top:10px}}
 body.land main{max-width:1360px;padding:18px 34px} body.land .defs{font-size:12.5px} body.land .eq{font-size:14px;line-height:1.5} body.land footer{display:none} body.land h1{font-size:52px;margin:8px 0 6px} body.land .sub{font-size:17px;max-width:none} body.land .claim{font-size:20px;margin-top:6px} body.land .card{margin-top:12px;padding:12px 16px 4px} body.land .grid{margin-top:10px} body.land .panel{padding-top:8px} body.land footer{padding-top:8px}
 body.land .grid{grid-template-columns:1.25fr .95fr .7fr;gap:30px;margin-top:14px} body.land .panel{padding-top:10px} body.land .defs{font-size:13px;line-height:1.55} body.land .eq{font-size:14px;line-height:1.6;white-space:nowrap}
 body.land .symlist{columns:2;column-gap:22px} body.land .chips{flex-direction:column;align-items:flex-start;margin-top:0;gap:6px} body.land .note-long{display:none} body.land .note-short{display:block}
@@ -56,6 +57,7 @@ body.land .symlist{columns:2;column-gap:22px} body.land .chips{flex-direction:co
 
 <div class="grid">
 <div class="panel"><div class="eq">C(d) = 0.05 + 0.95·exp(−(d−21)²/(2·22²)), &nbsp; −40 ≤ d ≤ 110<br>C(d) = 0 outside [−40, 110]<br>S(d) = (70·(100·C(d)) + 40·P + 30·H) / 140</div>
+<div class="defs weightsline" style="margin-top:6px;font-weight:600;overflow-wrap:anywhere">Weights shown: Ping When's 'cliff week' preset 70/40/30 (default 30/40/30).</div>
 <div class="defs note-long" style="margin-top:8px">12-month mark shown (year weight ×1; code: 24 mo ×0.84, 36 mo ×0.72). This is Ping When’s real scoring function — its stated scoring model, not measured reply data.</div>
 <div class="defs note-short" style="margin-top:6px">12-month mark (×1; 24 mo ×0.84, 36 mo ×0.72). The tool’s scoring model, not measured reply data.</div></div>
 <div class="panel"><div class="defs"><strong>Every symbol</strong><ul class="symlist">
@@ -145,6 +147,8 @@ window.__audit=()=>{
   while((n=tw.nextNode())){const e=n.parentElement; if(!e||e.closest('script,style,pre'))continue; const fam=(e.getAttribute('font-family')||getComputedStyle(e).fontFamily).split(',')[0].replace(/["']/g,'').trim(); byFont[fam]=(byFont[fam]||'')+n.textContent;}
   for(const k in byFont) byFont[k]=[...new Set(byFont[k])].filter(c=>c.trim()).sort().join('');
   const liWrap=[...document.querySelectorAll('.symlist li')].filter(li=>li.getBoundingClientRect().height>1.5*parseFloat(getComputedStyle(li).lineHeight)).map(li=>li.textContent);
-  return {width:innerWidth,small:SMALL,liWrap,charsByFont:byFont,heroViewBox:document.getElementById('hero').getAttribute('viewBox'),claimLines:hits.length,claimCurveHits:hits,minSvgLabelPx:+Math.min(...sizes).toFixed(2),has42:[...document.querySelectorAll('#hero text')].some(t=>t.textContent==='42')};
+  const wlEl=document.querySelector('.weightsline'),wr=wlEl&&wlEl.getBoundingClientRect(),pr=wlEl&&wlEl.parentElement.getBoundingClientRect(),mr=document.querySelector('main').getBoundingClientRect();
+  const wl=wlEl?{text:wlEl.textContent,visible:wr.width>0&&wr.height>0&&getComputedStyle(wlEl).visibility!=='hidden',inPanel:wr.left>=pr.left-0.5&&wr.right<=pr.right+0.5&&wr.bottom<=pr.bottom+0.5,noHScroll:document.documentElement.scrollWidth<=innerWidth,mainBottom:Math.round(mr.bottom),innerHeight:innerHeight}:null;
+  return {wl,width:innerWidth,small:SMALL,liWrap,charsByFont:byFont,heroViewBox:document.getElementById('hero').getAttribute('viewBox'),claimLines:hits.length,claimCurveHits:hits,minSvgLabelPx:+Math.min(...sizes).toFixed(2),has42:[...document.querySelectorAll('#hero text')].some(t=>t.textContent==='42')};
 };
 </script></body></html>

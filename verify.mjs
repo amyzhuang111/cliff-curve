@@ -25,6 +25,11 @@ let argmax = 0, best = -1; for (let d = -40; d <= 110; d += 0.01) if (C(d) > bes
 ok(Math.abs(argmax - 21) < 0.02, `C peaks at d=${argmax.toFixed(2)} (21 days before the cliff)`);
 for (const s of ['C(d) = 0.05 + 0.95·exp(−(d−21)²/(2·22²))', 'C(d) = 0 outside [−40, 110]', 'S(d) = (70·(100·C(d)) + 40·P + 30·H) / 140', '12-month mark', '×0.84', '×0.72', '21 days before', 'S &lt; 38', 'S ≥ 60', 'not measured reply data', 'rounded'])
   ok(html.includes(s), `page prints "${s}"`);
+const WL = "Weights shown: Ping When's 'cliff week' preset 70/40/30 (default 30/40/30).";
+ok(html.includes(WL), 'page prints weights line: ' + WL);
+{ const cs = readFileSync(join(PW, 'src/lib/constants.ts'), 'utf8');
+  ok(/DEFAULT_WEIGHTS[^=]*=\s*\{\s*cliff:\s*30,\s*proof:\s*40,\s*shift:\s*30/.test(cs), 'Ping When DEFAULT_WEIGHTS is 30/40/30 (constants.ts)');
+  ok(/id: "cliff"[\s\S]{0,120}weights: \{ cliff: 70, proof: 40, shift: 30 \}/.test(cs), "Ping When 'cliff' preset is 70/40/30 (constants.ts)"); }
 for (const sym of ['d = days to cliff', 'C = cliff proximity', 'P = proof', 'H = org-shift', 'S = final score', '21 = peak', '22 = σ', '0.05 = floor'])
   ok(html.includes(sym), `symbol defined: "${sym}"`);
 
@@ -101,6 +106,9 @@ if (layout) {
     ok(v.claimLines === 2 && v.claimCurveHits.every(h => h === 0), `${k} (${v.width}px): serif claim lines' bboxes (+4px pad) contain 0 curve points [${v.claimCurveHits}]`);
     ok(v.minSvgLabelPx >= 11, `${k}: smallest SVG label ${v.minSvgLabelPx}px >= 11px`);
     if (!v.small) ok(v.liWrap.length === 0, `${k}: no symbol definition wraps${v.liWrap.length ? ' — WRAPS: ' + v.liWrap.join(' | ') : ''}`);
+    ok(v.wl && v.wl.visible && v.wl.text === WL, `${k}: weights line rendered visibly`);
+    ok(v.wl && v.wl.inPanel && v.wl.noHScroll, `${k}: weights line inside its panel, no horizontal overflow`);
+    if (k === 'land' || k === 'port') ok(v.wl && v.wl.mainBottom <= v.wl.innerHeight, `${k}: page still fits ${v.width}x${v.wl.innerHeight} frame (bottom ${v.wl.mainBottom})`);
     if (v.small) ok(v.has42, `${k}: d=42 axis tick present on mobile`);
   }
   ok(layout['resize:to375'].small && layout['resize:to375'].heroViewBox === layout.m375.heroViewBox, `resize 1080→375 re-runs mobile layout (viewBox ${layout['resize:to375'].heroViewBox})`);

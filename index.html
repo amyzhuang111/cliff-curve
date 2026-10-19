@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>the cliff is a curve, not a date. — Ping When</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F7F1E8;--ink:#2E2A26;--taupe:#7A7168;--blush:#E3C0BD;--lilac:#D4C5E2;--sage:#B7B39B;--butter:#EFD9A7;--hair:#d8cec0}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,sans-serif}
+main{max-width:1560px;margin:0 auto;padding:44px 52px 28px;min-height:100vh;display:flex;flex-direction:column}
+.kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--taupe);font-weight:600}
+h1{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:clamp(42px,5.2vw,76px);line-height:.98;margin:14px 0 10px;letter-spacing:-.02em}
+h1 em{font-style:italic}
+.sub{font-size:clamp(16px,1.6vw,22px);line-height:1.45;max-width:900px;color:#4a443e}
+.claim{margin-top:10px;font-family:Fraunces,Georgia,serif;font-size:clamp(18px,2vw,26px);font-style:italic}
+.card{margin-top:22px;border:1px solid var(--hair);border-radius:22px;padding:20px 22px 10px;background:rgba(255,255,255,.28)}
+svg{width:100%;height:auto;display:block}
+.controls{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin:16px 2px 4px}
+.controls label{font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+input[type=range]{accent-color:#b98a86;width:200px;vertical-align:middle}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:13px;background:#fff8;border:1px solid var(--hair);border-radius:999px;padding:7px 12px}
+.grid{display:grid;grid-template-columns:1.25fr .85fr;gap:18px;margin-top:16px}
+.panel{border-top:1px solid var(--hair);padding-top:14px}
+.eq{font-family:"IBM Plex Mono",monospace;font-size:clamp(13px,1.35vw,18px);line-height:1.7;word-break:break-word}
+.defs{font-size:14px;line-height:1.6;color:#4a443e}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{padding:7px 11px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid var(--hair)}
+footer{margin-top:auto;padding-top:16px;display:flex;justify-content:space-between;gap:16px;color:var(--taupe);font-size:12.5px;line-height:1.5}
+@media (max-aspect-ratio:1/1){main{padding:38px 28px}.grid{grid-template-columns:1fr}}
+@media (max-width:520px){main{padding:26px 18px}h1{font-size:42px}.card{padding:12px 8px}.controls{gap:10px}input[type=range]{width:130px}footer{flex-direction:column}}
+body.land main{max-width:1360px;padding:18px 34px} body.land .defs{font-size:12.5px} body.land .eq{font-size:14px;line-height:1.5} body.land footer{display:none} body.land h1{font-size:52px;margin:8px 0 6px} body.land .sub{font-size:17px} body.land .claim{font-size:20px;margin-top:6px} body.land .card{margin-top:12px;padding:12px 16px 4px} body.land .grid{margin-top:10px} body.land .panel{padding-top:8px} body.land footer{padding-top:8px}
+
+</style></head><body><main>
+<div class="kicker">Ping When · plotted from the live scoring formula</div>
+<h1>the cliff is a <em>curve</em>, not a date.</h1>
+<div class="sub">Permission-to-act peaks <strong>21 days before</strong> the cliff — not on it. On the cliff day itself, proximity is already 0.65 and falling.</div>
+<div class="claim">Storing only the cliff date throws away the window’s shape.</div>
+
+<section class="card" aria-label="Cliff proximity curve">
+<svg id="hero" viewBox="0 0 1400 520" role="img"></svg>
+<div class="controls">
+<label>P · proof <input id="p" type="range" min="0" max="100" value="30"> <span id="pv">30</span></label>
+<label>H · shift <input id="h" type="range" min="0" max="100" value="20"> <span id="hv">20</span></label>
+<span class="readout" id="readout"></span>
+</div>
+<svg id="inset" viewBox="0 0 1400 260" role="img"></svg>
+</section>
+
+<div class="grid">
+<div class="panel"><div class="eq">C(d) = 0.05 + 0.95·exp(−(d−21)²/(2·22²)), &nbsp; −40 ≤ d ≤ 110<br>C(d) = 0 outside [−40, 110]<br>S(d) = (70·(100·C(d)) + 40·P + 30·H) / 140</div>
+<div class="defs" style="margin-top:8px">12-month mark shown (year weight 1.00; code: 24 mo ×0.84, 36 mo ×0.72). This is Ping When’s real scoring function — its stated scoring model, not measured reply data.</div></div>
+<div class="panel"><div class="defs"><strong>Every symbol:</strong> d = days to cliff (negative = after) · C = cliff proximity [0,1] · P, H = proof / shift category scores (0–100) · S = final score (0–100) · 21 = peak days before cliff · 22 = σ, spread in days · 0.05 = floor inside window</div>
+<div class="chips"><span class="chip" style="background:var(--sage)">wait · S &lt; 38</span><span class="chip" style="background:var(--blush)">warm · 38 ≤ S &lt; 60</span><span class="chip" style="background:var(--lilac)">reach · S ≥ 60 + window open</span></div>
+<div class="defs" style="margin-top:8px">Thresholds 60 reach / 38 warm are from Ping When’s constants. Reach also requires the window to be open in the live tool.</div></div>
+</div>
+<footer><span>Ping When — plotted from the live scoring formula · scoring.ts cliffProximity + constants.ts</span><span>C(21)=1.00 · C(0)=0.65 · C(43)=0.63 · C(−21)=0.20</span></footer>
+</main>
+<script>
+const PEAK=21, SIGMA=22;
+function C(d){ if(d>110||d<-40) return 0; const x=d-PEAK; return 0.05+0.95*Math.exp(-(x*x)/(2*SIGMA*SIGMA)); }
+function S(d,P,H){ return (70*(100*C(d))+40*P+30*H)/140; }
+// checkpoints printed for verification
+console.log([110,70,43,42,21,0,-21,-40].map(d=>`C(${d})=${C(d).toFixed(4)}`).join(' '));
+const NS='http://www.w3.org/2000/svg';
+function el(n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t)e.textContent=t;return e}
+function draw(){
+ const P=+document.getElementById('p').value,H=+document.getElementById('h').value;
+ document.getElementById('pv').textContent=P; document.getElementById('hv').textContent=H;
+ document.getElementById('readout').textContent=`S at peak (d=21): ${S(21,P,H).toFixed(1)} · S at cliff (d=0): ${S(0,P,H).toFixed(1)}`;
+ // HERO
+ const svg=document.getElementById('hero'); svg.innerHTML='';
+ const vb=svg.viewBox.baseVal; const W=1400,Hh=vb&&vb.height?vb.height:520,L=70,R=30,T=30,B=58, xmin=-55,xmax=125,ymin=0,ymax=1.12;
+ const X=d=>L+(d-xmin)/(xmax-xmin)*(W-L-R), Y=v=>T+(ymax-v)/(ymax-ymin)*(Hh-T-B);
+ // lilac peak+-sigma band -1..43
+ svg.append(el('rect',{x:X(-1),y:Y(1.08),width:X(43)-X(-1),height:Y(0)-Y(1.08),fill:'#D4C5E2',opacity:.55,rx:8}));
+ // axes
+ svg.append(el('line',{x1:L,y1:Y(0),x2:W-R,y2:Y(0),stroke:'#2E2A26','stroke-width':1}));
+ svg.append(el('line',{x1:X(0),y1:Y(0),x2:X(0),y2:Y(1.08),stroke:'#2E2A26','stroke-width':1.2,'stroke-dasharray':'4 5'}));
+ // path sampling exact function
+ let pts=[]; for(let d=xmin;d<=xmax;d+=0.5) pts.push([X(d),Y(C(d))]);
+ let area=`M ${X(xmin)} ${Y(0)} `+pts.map(p=>`L ${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ')+` L ${X(xmax)} ${Y(0)} Z`;
+ svg.append(el('path',{d:area,fill:'#E3C0BD',opacity:.65}));
+ svg.append(el('path',{d:'M '+pts.map(p=>`${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' L '),fill:'none',stroke:'#2E2A26','stroke-width':3,'stroke-linejoin':'round'}));
+ // labels
+ const txt=(x,y,s,size=22,anchor='middle',w=600,ff='Inter')=>{const t=el('text',{x,y,'font-size':size,'text-anchor':anchor,fill:'#2E2A26','font-weight':w,'font-family':ff},s);svg.append(t);return t};
+ txt(X(21),24,'peak 21d before · σ = 22d',26);
+ txt(X(0)+10,Y(0.28),'cliff date · d = 0',20,'start');
+ txt(X(21),Hh-14,'d = 21',20); txt(X(0),Hh-14,'0',20); txt(X(-40),Hh-14,'−40',20); txt(X(110),Hh-14,'110',20);
+ txt(L-8,Y(1)+7,'1.00',18,'end'); txt(L-8,Y(0)+7,'0',18,'end');
+ txt(W-R,Hh-32,'days to cliff → d',18,'end',400);
+ [[42,'d=42 → 0.65'],[21,'d=21 → 1.00'],[0,'d=0 → 0.65'],[-21,'d=−21 → 0.20']].forEach(([d,s])=>{
+   svg.append(el('circle',{cx:X(d),cy:Y(C(d)),r:8,fill:'#EFD9A7',stroke:'#2E2A26','stroke-width':1.5}));
+   txt(X(d), d===21? Y(C(d))+34 : Y(C(d))-18, s, 20);
+ });
+ txt(X(21),Y(.48),'permission-to-act peaks 21 days BEFORE the cliff',28,'middle',500,'Fraunces, Georgia, serif');
+ // INSET S(d)
+ const si=document.getElementById('inset'); si.innerHTML='';
+ const vb2=si.viewBox.baseVal; const h2=vb2&&vb2.height?vb2.height:260,t2=22,b2=38,l2=70,r2=30, ymax2=110;
+ const X2=d=>l2+(d-xmin)/(xmax-xmin)*(W-l2-r2), Y2=v=>t2+(ymax2-v)/ymax2*(h2-t2-b2);
+ [[60,'60 reach'],[38,'38 warm / line']].forEach(([v,s])=>{si.append(el('line',{x1:l2,y1:Y2(v),x2:W-r2,y2:Y2(v),stroke:'#7A7168','stroke-width':1,'stroke-dasharray':'5 4'})); const t=el('text',{x:W-r2,y:Y2(v)-6,'font-size':18,'text-anchor':'end',fill:'#2E2A26','font-family':'Inter'},s); si.append(t);});
+ // shaded where S>=38
+ let pts2=[]; for(let d=-40;d<=110;d+=0.5) pts2.push([X2(d),Y2(S(d,P,H))]);
+ si.append(el('path',{d:'M '+pts2.map(p=>`${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' L '),fill:'none',stroke:'#2E2A26','stroke-width':2.5}));
+ si.append(el('line',{x1:X2(0),y1:Y2(0),x2:X2(0),y2:Y2(105),stroke:'#2E2A26','stroke-dasharray':'4 5'}));
+ const t=el('text',{x:l2,y:20,'font-size':20,fill:'#2E2A26','font-family':'Inter','font-weight':600},`S(d) with P=${P}, H=${H} — proof / org-shift lift the whole window`); si.append(t);
+ const t2e=el('text',{x:l2,y:h2-10,'font-size':16,fill:'#7A7168','font-family':'Inter'},'d →   thresholds: 60 reach · 38 line/warm   ·   shaded hero above: C(d) window (−40 to 110, 0 outside)'); si.append(t2e);
+}
+const mode=new URLSearchParams(location.search).get('m'); if(mode)document.body.classList.add(mode);
+if(mode==='land'){document.getElementById('hero').setAttribute('viewBox','0 0 1400 380');document.getElementById('inset').setAttribute('viewBox','0 0 1400 170');}
+if(window.innerWidth<600){document.getElementById('hero').setAttribute('viewBox','250 0 900 520');}
+document.getElementById('p').addEventListener('input',draw); document.getElementById('h').addEventListener('input',draw); draw();
+</script></body></html>
